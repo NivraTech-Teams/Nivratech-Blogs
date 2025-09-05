@@ -1,7 +1,7 @@
 {
   "name": "Nivra Blogs Tool",
   "short_name": "NivraBlogs",
-  "start_url": "./index.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#fd0d49",
@@ -11,6 +11,11 @@
       "src": "./NivraTech .jpg",
       "sizes": "192x192",
       "type": "image/jpg"
+    },
+     {
+      "src": "./NivraTech .jpg",
+        "sizes": "72x72",
+       "type": "image/jpg"
     },
     {
       "src": "./NivraTech .jpg",
