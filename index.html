@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NivraTech Blog Post Creator</title>
+    <link rel="manifest" href="/manifest.json">
+     <meta name="theme-color" content="#fd0d49" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -565,5 +567,18 @@ background: linear-gradient(45deg, #11998E, #38EF7D);
       link.addEventListener("click", () => toggleNav(false));
     });
   </script>
+
+  <script>
+      if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then(reg => console.log("Service Worker registered:", reg))
+      .catch(err => console.log("Service Worker failed:", err));
+  });
+}
+
+  </script>
 </body>
+
 </html>
