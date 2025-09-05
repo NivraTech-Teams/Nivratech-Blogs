@@ -2,7 +2,8 @@ const CACHE_NAME = "nivrablogs-cache-v1";
 const urlsToCache = [
   "/",
   "/index.html",
-  "/manifest.json"
+  "/manifest.json",
+  "/NivraTech .jpg"
 ];
 
 // Install Service Worker
