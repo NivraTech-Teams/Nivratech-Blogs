@@ -538,35 +538,7 @@ background: linear-gradient(45deg, #11998E, #38EF7D);
             ];
         });
     </script>
-    <script>
-    //navbar
-    const navToggle = document.getElementById("nav-toggle");
-    const navMenu = document.getElementById("nav-menu");
-    const navClose = document.getElementById("nav-close");
-    const navLinks = document.querySelectorAll(".nav ul li a");
-
-    function toggleNav(open) {
-      const menu = navMenu.querySelector("ul");
-      if (open) {
-        menu.classList.add("open");
-        document.body.classList.add("no-scroll");
-      } else {
-        menu.classList.remove("open");
-        document.body.classList.remove("no-scroll");
-      }
-    }
-
-    // Open nav
-    navToggle.addEventListener("click", () => toggleNav(true));
-
-    // Close nav on close icon
-    navClose.addEventListener("click", () => toggleNav(false));
-
-    // Close nav when any link is clicked
-    navLinks.forEach((link) => {
-      link.addEventListener("click", () => toggleNav(false));
-    });
-  </script>
+   
 
   <script>
       if ("serviceWorker" in navigator) {
@@ -582,3 +554,4 @@ background: linear-gradient(45deg, #11998E, #38EF7D);
 </body>
 
 </html>
+
