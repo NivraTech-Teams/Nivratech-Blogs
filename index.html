@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NivraTech Blog Post Creator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            background: linear-gradient(45deg, #cd9cf2, #f6f3ff);
+            background: linear-gradient(135deg, #E3FDF5, #FFE6FA);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            background: linear-gradient(45deg, #ee0979, #ff6a00);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 5px solid #fdbb2d;
+        }
+        
+        .instructions h2 {
+            color: #1a2a6c;
+            margin-bottom: 1rem;
+        }
+        
+        .instructions ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1a2a6c;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #b21f1f;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            background: linear-gradient(135deg, #FF512F, #DD2476);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, #b21f1f, #fdbb2d);
+            background: linear-gradient(45deg, #D4145A, #FBB03B);
+            transform: translateY(-2px);
+        }
+        
+        .btn-ai {
+            background: linear-gradient(to right, #0d7a3c, #14a34b);
+background: linear-gradient(45deg, #11998E, #38EF7D);
+        }
+        
+        .btn-ai:hover {
+            background: linear-gradient(to right, #14a34b, #18c058);
+            background: linear-gradient(45deg, #43e97b, #38f9d7);
+        }
+        
+        .output {
+            background: #2d2d2d;
+            color: #e0e0e0;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            display: none;
+        }
+        
+        .copy-btn {
+            margin-top: 1rem;
+            background: #fdbb2d;
+            background: linear-gradient(45deg, #fffc00, #ffffff);
+            background: linear-gradient(45deg, #fceabb, #f8b500);
+            color: #333;
+        }
+        
+        .copy-btn:hover {
+            background: #ffcc66;
+            background: linear-gradient(45deg, #fffc00, #ffffff);
+        }
+        
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+        
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .input-method {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .method-btn {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .method-btn.active {
+            background: #e1f5fe;
+            border-color: #1a2a6c;
+        }
+        
+        .method-btn i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #1a2a6c;
+        }
+        
+        .ai-section {
+            background: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .manual-section {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-method {
+                flex-direction: column;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: white;
+            background: #1a2a6c;
+            background: linear-gradient(45deg, #4776E6, #8E54E9);
+            margin-top: 2rem;
+            border-radius: 0 0 15px 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-blog"></i> NivraTech Blog Post Creator</h1>
+            <p>Create blog posts with AI assistance or manual input</p>
+        </header>
+        
+        <div class="content">
+            <div class="instructions">
+                <h2><i class="fas fa-info-circle"></i> How to Use This Template</h2>
+                <ol>
+                    <li>Choose your input method (AI-assisted or manual)</li>
+                    <li>Fill in the required fields</li>
+                    <li>Click the "Generate Blog Post Code" button</li>
+                    <li>Copy the generated code from the output box</li>
+                    <li>Send the code to your development team for integration</li>
+                </ol>
+                <p><strong>Note:</strong> Fields marked with * are required.</p>
+            </div>
+            
+            <div class="input-method">
+                <div class="method-btn active" id="manualBtn">
+                    <i class="fas fa-pencil-alt"></i>
+                    <h3>Manual Input</h3>
+                    <p>Fill in all fields yourself</p>
+                </div>
+                <div class="method-btn" id="aiBtn">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI-Assisted</h3>
+                    <p>Paste AI-generated content</p>
+                </div>
+            </div>
+            
+            <form id="blogForm">
+                <div class="manual-section" id="manualSection">
+                    <div class="two-columns">
+                        <div class="form-group">
+                            <label for="postTitle" class="required">Post Title</label>
+                            <input type="text" id="postTitle" required placeholder="e.g., Introduction to React Hooks">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="postCategory" class="required">Category</label>
+                            <select id="postCategory" required>
+                                <option value="">Select a category</option>
+                                <option value="Web Development">Web Development</option>
+                                <option value="Digital Marketing">Digital Marketing</option>
+                                <option value="UI/UX Design">UI/UX Design</option>
+                                <option value="SEO">SEO</option>
+                                <option value="Cloud Computing">Cloud Computing</option>
+                                <option value="Cybersecurity">Cybersecurity</option>
+                                <option value="Mobile Development">Mobile Development</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postExcerpt" class="required">Short Excerpt/Description</label>
+                        <textarea id="postExcerpt" required placeholder="Brief description of your blog post (1-2 sentences)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postImage" class="required">Image URL</label>
+                        <input type="text" id="postImage" required placeholder="https://example.com/your-image.jpg">
+                        <small>Tip: Use high-quality images (1200×600px works well)</small>
+                    </div>
+                    
+                    <div class="two-columns">
+                        <div class="form-group">
+                            <label for="postAuthor" class="required">Author Name</label>
+                            <input type="text" id="postAuthor" required placeholder="e.g., Sarah Johnson">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="postDate" class="required">Publication Date</label>
+                            <input type="text" id="postDate" required placeholder="e.g., January 15, 2024">
+                        </div>
+                    </div>
+                    
+                    <div class="two-columns">
+                        <div class="form-group">
+                            <label for="postReadTime" class="required">Estimated Read Time</label>
+                            <input type="text" id="postReadTime" required placeholder="e.g., 8 min read">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="postPopular">Mark as Popular Post?</label>
+                            <select id="postPopular">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postContent" class="required">Blog Content (HTML Format)</label>
+                        <textarea id="postContent" required placeholder="<p>Your content here</p><h2>Subheading</h2><p>More content</p>" rows="10"></textarea>
+                        <small>
+                            Tips: 
+                            <ul>
+                                <li>Use &lt;p&gt; for paragraphs</li>
+                                <li>Use &lt;h2&gt; for subheadings</li>
+                                <li>Use &lt;blockquote&gt; for quotes</li>
+                                <li>Use &lt;ul&gt; and &lt;li&gt; for lists</li>
+                            </ul>
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="ai-section" id="aiSection">
+                    <div class="form-group">
+                        <label for="aiContent" class="required">Paste AI-Generated Blog Post</label>
+                        <textarea id="aiContent" placeholder="Paste the complete blog post generated by ChatGPT or similar AI tool here..." rows="15"></textarea>
+                    </div>
+                    
+                    <button type="button" id="parseAiBtn" class="btn btn-ai">Parse AI Content <i class="fas fa-cogs"></i></button>
+                    <div id="aiStatus"></div>
+                </div>
+                
+                <button type="button" id="generateBtn" class="btn">Generate Blog Post Code <i class="fas fa-code"></i></button>
+            </form>
+            
+            <div class="output" id="outputCode">
+                {/* Generated code will appear here */}
+            </div>
+            
+            <button type="button" id="copyBtn" class="btn copy-btn">Copy Code to Clipboard <i class="fas fa-copy"></i></button>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Code copied successfully! Send this to your development team.
+            </div>
+        </div>
+        
+        <footer>
+            <p>NivraTech Blog Management System | For assistance, contact your development team</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const outputCode = document.getElementById('outputCode');
+            const successMessage = document.getElementById('successMessage');
+            const form = document.getElementById('blogForm');
+            const manualBtn = document.getElementById('manualBtn');
+            const aiBtn = document.getElementById('aiBtn');
+            const manualSection = document.getElementById('manualSection');
+            const aiSection = document.getElementById('aiSection');
+            const parseAiBtn = document.getElementById('parseAiBtn');
+            const aiContent = document.getElementById('aiContent');
+            const aiStatus = document.getElementById('aiStatus');
+            
+            // Set current date as default
+            const currentDate = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('postDate').value = currentDate.toLocaleDateString('en-US', options);
+            
+            // Input method toggle
+            manualBtn.addEventListener('click', function() {
+                manualBtn.classList.add('active');
+                aiBtn.classList.remove('active');
+                manualSection.style.display = 'block';
+                aiSection.style.display = 'none';
+            });
+            
+            aiBtn.addEventListener('click', function() {
+                aiBtn.classList.add('active');
+                manualBtn.classList.remove('active');
+                manualSection.style.display = 'none';
+                aiSection.style.display = 'block';
+            });
+            
+            // Parse AI content
+            parseAiBtn.addEventListener('click', function() {
+                const content = aiContent.value.trim();
+                if (!content) {
+                    aiStatus.innerHTML = '<div style="color: #b21f1f; margin-top: 10px;">Please paste some AI-generated content first.</div>';
+                    return;
+                }
+                
+                aiStatus.innerHTML = '<div style="color: #1a2a6c; margin-top: 10px;"><i class="fas fa-spinner fa-spin"></i> Parsing content...</div>';
+                
+                // Simulate parsing (in a real application, this would be more sophisticated)
+                setTimeout(() => {
+                    // Extract title (first line or obvious title)
+                    const firstLine = content.split('\n')[0];
+                    if (firstLine && firstLine.length < 100 && !firstLine.startsWith('<')) {
+                        document.getElementById('postTitle').value = firstLine.replace(/^#+\s*/, '').trim();
+                    }
+                    
+                    // Try to extract excerpt (first paragraph)
+                    const firstParagraph = content.split('\n\n')[0];
+                    if (firstParagraph && firstParagraph.length < 200) {
+                        document.getElementById('postExcerpt').value = firstParagraph.replace(/<[^>]*>/g, '').trim();
+                    }
+                    
+                    // Set category to first one if not set
+                    if (!document.getElementById('postCategory').value) {
+                        document.getElementById('postCategory').value = "Web Development";
+                    }
+                    
+                    // Format content as HTML if it's plain text
+                    let formattedContent = content;
+                    if (!content.includes('<')) {
+                        formattedContent = content.split('\n\n').map(paragraph => {
+                            if (paragraph.trim() === '') return '';
+                            if (paragraph.startsWith('#')) {
+                                return `<h2>${paragraph.replace(/^#+\s*/, '').trim()}</h2>`;
+                            }
+                            if (paragraph.startsWith('- ') || paragraph.startsWith('* ')) {
+                                const items = paragraph.split('\n').map(item => 
+                                    `<li>${item.replace(/^[-*]\s*/, '').trim()}</li>`
+                                ).join('');
+                                return `<ul>${items}</ul>`;
+                            }
+                            return `<p>${paragraph.trim()}</p>`;
+                        }).join('\n');
+                    }
+                    
+                    document.getElementById('postContent').value = formattedContent;
+                    
+                    aiStatus.innerHTML = '<div style="color: #4CAF50; margin-top: 10px;"><i class="fas fa-check-circle"></i> Content parsed successfully! Check the fields above and click "Generate Blog Post Code".</div>';
+                }, 1500);
+            });
+            
+            generateBtn.addEventListener('click', function() {
+                // Basic validation
+                let isValid = true;
+                const requiredFields = form.querySelectorAll('[required]');
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.style.borderColor = '#b21f1f';
+                    } else {
+                        field.style.borderColor = '#ddd';
+                    }
+                });
+                
+                if (!isValid) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                
+                // Get next ID (in a real scenario, this would come from the development team)
+                const nextId = Math.max(...blogPosts.map(post => post.id)) + 1;
+                
+                // Generate the code
+                const blogCode = `{
+  id: ${nextId},
+  title: "${document.getElementById('postTitle').value.replace(/"/g, '\\"')}",
+  excerpt: "${document.getElementById('postExcerpt').value.replace(/"/g, '\\"')}",
+  image: "${document.getElementById('postImage').value}",
+  date: "${document.getElementById('postDate').value}",
+  category: "${document.getElementById('postCategory').value}",
+  author: "${document.getElementById('postAuthor').value}",
+  readTime: "${document.getElementById('postReadTime').value}",
+  popular: ${document.getElementById('postPopular').value},
+  content: \`
+    ${document.getElementById('postContent').value}
+  \`
+}`;
+
+                // Display the code
+                outputCode.textContent = blogCode;
+                outputCode.style.display = 'block';
+                copyBtn.style.display = 'inline-block';
+            });
+            
+            copyBtn.addEventListener('click', function() {
+                const textArea = document.createElement('textarea');
+                textArea.value = outputCode.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                
+                // Hide message after 3 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            });
+            
+            // Sample blog posts data (for ID calculation)
+            const blogPosts = [
+                { id: 1, title: "Sample Post 1" },
+                { id: 2, title: "Sample Post 2" },
+                { id: 3, title: "Sample Post 3" },
+                { id: 4, title: "Sample Post 4" },
+                { id: 5, title: "Sample Post 5" },
+                { id: 6, title: "Sample Post 6" }
+            ];
+        });
+    </script>
+    <script>
+    //navbar
+    const navToggle = document.getElementById("nav-toggle");
+    const navMenu = document.getElementById("nav-menu");
+    const navClose = document.getElementById("nav-close");
+    const navLinks = document.querySelectorAll(".nav ul li a");
+
+    function toggleNav(open) {
+      const menu = navMenu.querySelector("ul");
+      if (open) {
+        menu.classList.add("open");
+        document.body.classList.add("no-scroll");
+      } else {
+        menu.classList.remove("open");
+        document.body.classList.remove("no-scroll");
+      }
+    }
+
+    // Open nav
+    navToggle.addEventListener("click", () => toggleNav(true));
+
+    // Close nav on close icon
+    navClose.addEventListener("click", () => toggleNav(false));
+
+    // Close nav when any link is clicked
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => toggleNav(false));
+    });
+  </script>
+</body>
+</html>
